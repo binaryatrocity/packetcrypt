@@ -1,0 +1,14 @@
+{% macro render_field_with_label(field) %}
+{% set css_class=kwargs.pop('class', '') %}
+<span class="uk-text-small uk-text-bold">{{ field.label }}:</span>
+<div class="uk-form-row pc-form-row">{{ field(class=css_class, **kwargs)|safe }}</div>
+{% endmacro %}
+
+{% macro render_field_with_label_oneline(field) %}
+{% set css_class=kwargs.pop('class', '') %}
+<div class="uk-form-row">{{field.label}} {{field(class=css_class, **kwargs)|safe }}</div>
+{% endmacro %}
+
+{% macro render_field(field) %}
+<div class="uk-form-row">{{ field(class=css_class, **kwargs)|safe }}</div>
+{% endmacro %}

@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+{% block title %}Confirming purchase - packetcrypt{% endblock %}
+
+{% block content %}
+<div id="form-container" class="uk-width-1-2 uk-panel uk-panel-box uk-container-center">
+    <h2>Invoice Created</h2>
+    Please send {{ invoice.total_btc - invoice.value_paid}} BTC to: <a href="bitcoin:{{invoice.address}}?amount={{invoice.total_btc}}">{{ invoice.address }}</a>
+    <br/><br/>
+    <img src="https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=bitcoin:{{invoice.address}}?amount={{invoice.total_btc}}&callback=?" id="btc_qr" />
+    <button class="uk-button uk-button-primary uk-button-expand" id="confirm">Confirm Payment <i class="uk-icon-spinner"></i></button>
+    <form action="{{url_for('confirm_purchase', invoice_id=invoice.id)}}" method="POST" name="delete_ticket" style="width:100%;">
+    <button type="submit" class="uk-button uk-button-expand" id="cancel">Cancel Payment</button>
+    </form>
+</div>
+
+<div id="modal" class="uk-modal">
+    <div class="uk-modal-dialog uk-modal-dialog-slide">
+        <a class="uk-modal-close uk-close"></a>
+        <h1>Thank you!</h1>
+        <p>Your payment of <label id="valuepaid"></label> <i class="uk-icon-btc"></i>  has been confirmed.</p>
+        <p id="paid">Your VPN service is being configured and should be available from your dashboard in the next 5-10 minutes.</p>
+        <p id="notpaid">
+            However, this does not cover the total cost for your PacketCrypt service.
+            Please send <label id="remaining"></label> <i class="uk-icon-btc"></i> to: <a id="btcaddy" >{{invoice.address}}</a>
+        </p>
+        <p>Transaction: <a id="hashlink"></a></p>
+        <a class="uk-button uk-button-success uk-button-expand" href="{{url_for('dashboard')}}">Return to Dashboard</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block postscript %}
+<script>
+    var amountPaidOnLoad = {{invoice.value_paid}};
+    $(document).ready(function(){
+        var confirmButton = $('#confirm');
+        var cancelButton = $('#cancel');
+
+        confirmButton.click(checkPayment);
+
+        checkPayment();
+
+    });
+var checkPayment = function (arg){
+    $('#confirm > i').addClass('uk-icon-spin'); 
+    $.post('/invoice_status', {
+            invoice_id: {{invoice.id}}
+            }).done(function(d){
+                var paidInFull = (d['value_paid'] >= d['total_btc']);
+                var transactionHash = d['input_transaction_hash'];
+                var confirmations = d['confirmations'];
+
+                window.setTimeout(stopSpin, 3500);
+
+                if(confirmations == null || amountPaidOnLoad == d['value_paid']){
+                    //$('#flash-wrapper').children(":first").append("<div class='uk-alert uk-alert-warning' data-uk-alert><a class='uk-alert-close uk-close'></a>Unable to confirm payment. Wait a few seconds and try again.</div>");
+                    window.setTimeout(checkPayment, 10000);
+                } else {
+                    // Setup the modal before display
+                    var priceLeft = (d['total_btc'] - d['value_paid']);
+                    var btcLink = "bitcoin:{{invoice.address}}?amount="+priceLeft;
+                    var hashLink = "https://blockchain.info/tx/"+transactionHash;
+                    $('#valuepaid').html(d['value_paid']);
+                    $('#remaining').html(d['total_btc'] - d['value_paid']);
+                    (paidInFull) ? $('#notpaid').css('display', 'none') : $('#paid').css('display', 'none');
+                    $('#btcaddy').attr('href', btcLink);
+                    $('#hashlink').attr('href', hashLink).html(transactionHash);
+
+                    // Display teh modal 
+                    var modal = new $.UIkit.modal.Modal('#modal');
+                    modal.show();
+                }
+            }).fail(function(){
+                $('#flash-wrapper').children(":first").append("<div class='uk-alert uk-alert-danger' data-uk-alert><a href='' class='uk-alert-close uk-close'></a>An error occured while trying to confirm your payment.</div>");
+        });
+};
+
+var stopSpin = function (arg){
+    $('#confirm > i').removeClass('uk-icon-spin');
+};
+</script>
+{% endblock %}
+

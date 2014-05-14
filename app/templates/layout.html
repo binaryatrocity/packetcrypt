@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <!-- Stylesheets -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='lib/uikit/css/uikit.gradient.min.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}" />
+
+        <!-- Javascript -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="{{ url_for('static', filename='lib/uikit/js/uikit.min.js') }}"></script>
+
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+    <body>
+        <div id="container" class="uk-grid">
+            <div id="big-top-bar" class="uk-width-1-1">
+                <div id="top-bar" class="">
+                    <div class="uk-float-left"><img src="http://placehold.it/250x65" /></div>
+                    <div class="uk-float-right uk-button-group">
+                        <a class="uk-button" href="{{ url_for('index') }}">Home</a>
+                        <a class="uk-button" href=" {{ url_for('blog') }}">Blog</a>
+                        {% if g.user.is_authenticated() %}
+                        <a class="uk-button uk-button-success" href="{{ url_for_security('logout') }}">Logoff</a>
+                        <a class="uk-button uk-button-primary" href=" {{ url_for('dashboard') }}">Dashboard</a>
+                        {% else %}
+                        <a class="uk-button uk-button-success" href="{{ url_for_security('login') }}">Login</a>
+                        <a class="uk-button uk-button-primary" href="{{ url_for_security('register') }}">Signup</a>
+                        {% endif %}
+                        {% if g.user.has_role('Admin') %}
+                        <a class="uk-button uk-button-danger" href="/admin/">Admin Panel</a>
+                        {% endif %}
+                    </div> 
+                </div>
+                <a href="http://bitcoin.org"><img id="bitcoin-logo" src="{{ url_for('static', filename='img/bitcoins.png') }}" /></a>
+            </div>
+            <div id="flash-wrapper" class="uk-width-1-1">
+                <div class="uk-panel uk-width-1-2 uk-container-center">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="uk-alert uk-alert-success" data-uk-alert><a href="" class="uk-alert-close uk-close"></a>{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                    {% block flash %}{% endblock %}
+                    {% endwith %}
+                </div>
+            </div>
+            <div id="content" class="uk-width-1-1">
+                {% block content %}{% endblock %}
+            </div>
+            <div id="footer" class="uk-width-1-1">
+                <hr/>
+                <div class="uk-float-left">
+                    &copy; 2013 PacketCrypt, Inc. All Rights Reserved. PacketCrypt&trade; is property of PacketCrypt, Inc.<br/> All other marks are the property of their respective owners.
+                    <br />
+                    <a href="">Terms</a> | <a href="">Privacy Policy</a> | <a href="">Contact us</a>
+                </div>
+                <div class="uk-float-right" id="footer-social">
+                    <img src="{{ url_for('static', filename='img/reddit.png') }}"/>
+                    <img src="{{ url_for('static', filename='img/twitter.png') }}"/>
+                    <img src="{{ url_for('static', filename='img/facebook.png') }}"/>
+                </div>
+            </div>
+        </div>
+    {% block postscript %}{% endblock %}
+    </body>
+</html>

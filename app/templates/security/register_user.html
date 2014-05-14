@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% from "_macros.html" import render_field_with_label, render_field %}
+
+{% block title %}Register - packetcrypt{% endblock %}
+{% block flash %}
+{% for field in register_user_form.errors %}
+{% for error in register_user_form.errors[field] %}
+<div class="uk-alert uk-alert-danger" data-uk-alert><a href="" class="uk-alert-close uk-close"></a>{{ field }}: {{ error }}</div>
+{% endfor %}
+{% endfor %}
+{% endblock %}
+
+{% block content %}
+<div id="form-container" class="uk-width-3-5 uk-panel uk-panel-box uk-container-center">
+<form action="{{ url_for_security('register') }}" method="POST" name="register_user_form" class="uk-form" style="display:inline-block;">
+    {{ register_user_form.hidden_tag() }}
+    {{ render_field_with_label(register_user_form.email) }}
+    {{ render_field_with_label(register_user_form.password) }}
+    {% if register_user_form.password_confirm %}
+    {{ render_field_with_label(register_user_form.password_confirm) }}
+    {% endif %}
+    {{ render_field(register_user_form.submit, class='uk-button uk-button-primary') }}
+</form>
+<div id="form-info" class="uk-align-right uk-text-info">
+    All we need is an email address and a password to create an account, and you'll be clicks away from browsing securely.
+    After registering please check your inbox for a verification email.
+
+    <br/><p><a href="{{url_for_security('login')}}" class="uk-text-bold uk-text-muted">Click here to sign in to an existing account.</a></p>
+</div>
+</div>
+{% endblock %}

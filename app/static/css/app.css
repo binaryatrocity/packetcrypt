@@ -1,0 +1,96 @@
+body {
+}
+
+#top-bar {
+    position: absolute;
+    width:100%;
+    top:0;
+    left:0;
+    background-color: rgba(255,255,255,0.85);
+}
+
+#top-bar div:last-child {
+    margin: 1.0%;
+}
+
+#big-top-bar {
+    background: url('/static/img/binary.jpg') no-repeat;
+    min-height: 400px;
+    position:relative;
+}
+
+.pc-market-block {
+    max-width: 60%;
+    margin-top: 2em;
+}
+
+#tech-images > img {
+    border-radius: 1.0;
+    padding: 40px 30px;
+    display: inline-block;
+    width: 100px;
+}
+
+#pc-dashboard-wrapper {
+    max-width:60%;
+}
+
+#footer {
+    padding-top:4em;
+}
+
+#footer-social > img {
+    border-radius: 100px;;
+    padding: 0 8px;
+    display: inline-block;
+    width: 60px;
+}
+#three-fold-container {
+    max-width: 80%;
+}
+#two-fold-container {
+    padding-top:6em;
+    max-width:80%;
+}
+
+#container {
+}
+
+#form-container {
+    margin-top:20px;
+}
+
+#form-container .uk-form-row > textarea {
+    width: 100%;
+    height: 200px;
+}
+
+#bitcoin-logo {
+    bottom: 10px;
+    position: absolute;
+    right: 10px;
+    width: 200px;
+}
+
+#btc_qr {
+    margin: 0 auto;
+    display:block
+}
+
+.pc-form-row {
+    margin-bottom: 2em;
+}
+
+#form-info {
+    width:55%;
+}
+#form-info > .uk-button {
+    margin-top:2em;
+}
+#form-container > form {
+    width:40%;
+    display:inline-block;
+}
+.pc-form-row > input {
+    width:100%;
+}

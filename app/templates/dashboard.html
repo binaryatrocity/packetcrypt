@@ -1,0 +1,130 @@
+{% extends "layout.html" %}
+
+{% block title %} Dashboard - packetcrypt {% endblock %}
+
+{% block content %}
+<div class="uk-container-center" id="pc-dashboard-wrapper">
+    <div class="uk-grid">
+        <div class="uk-width-1-1">
+            <h4 class="uk-float-right">Hello, {{ user.email }}!</h4>
+            <br/>
+        </div>
+        <div class="uk-width-1-2">
+            <div class="uk-panel">
+                <h2 class="uk-panel-title">Account Information  <i class="uk-icon-user"></i>  </h2>
+                <ul>
+                    <li>Email Address: {{ user.email }}</li>
+                    <li>Last Payment Date: {{ lastpaid }}</li>
+                    <li>Plan Expires: {{ expires }}</li>
+                    <li>Number of Support Tickets: {{ user.tickets.all() | length }} </li>
+                    <li class="uk-text-muted">Traffic This Month: 000Mb (00%)</li>
+                    <li class="uk-text-muted">Number of Referred Signups: 0</li>
+                </ul>
+            </div>
+        </div>
+        <div class="uk-width-1-2">
+            <div class="uk-panel uk-panel-box uk-panel-box-secondary">
+                <h2 class="uk-panel-title">Controls  <i class="uk-icon-cogs uk-float-right"></i>  </h2>
+                <hr class="uk-panel-divider">
+                <ul class="uk-nav">
+                    <li><a href="">Logout</a></li>
+                    <li><a href="">Change Password</a></li>
+                    <li><a href="{{ url_for('newticket') }}">Open Support Ticket</a></li>
+                </ul>
+                <div class="uk-panel" style="margin-top:1em;">
+                    {% if latest %}
+                    <a href="{{url_for('purchase')}}" class="uk-button uk-button-success uk-align-left uk-button-small">Renew</a>
+                    {% else %}
+                    <a href="{{url_for('purchase')}}" class="uk-button uk-button-success uk-align-left uk-button-small">Purchase</a>
+                    {% endif %}
+
+
+                    <div class="uk-button-group uk-align-right" style="">
+                        <button class="uk-button uk-button-disabled uk-button-small" type="submit"><i class="uk-icon-folder-open-alt"></i>  Download</button>
+                        <div data-uk-dropdown>
+                            <a href="" class="uk-button uk-button-small"><i class="uk-icon-caret-down"></i></a>
+                            <div class="uk-dropdown uk-dropdown-small">
+                                <ul class="uk-nav uk-nav-dropdown">
+                                    <li><a href="">Windows</a></li>
+                                    <li><a href="">OSX</a></li>
+                                    <li><a href="">Android</a></li>
+                                    <li><a href="">iOS</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div> <!-- end button-group -->
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-1-1">
+            <table class="uk-table uk-table-hover uk-table-striped">
+                <caption>Support Tickets <div class="uk-badge" style="margin-left:1em;">{{ g.user.tickets.all() | length }}</div></caption>
+                <thead>
+                    <tr><th>Date</th><th>Subject</th><th>Status</th><th>Last Updated</th></tr>
+                </thead>
+                <tbody>
+                    {% if g.user.tickets.all() %}
+                    {% for ticket in g.user.tickets.all() %}
+                    <tr class="ticket-row">
+                        <td>{{ ticket.timestamp |date }}</td>
+                        <td><a href="{{ url_for('viewticket', tid=ticket.id) }}"></a>{{ ticket.subject }}</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr><td>You have no support ticket history</td><td></td><td></td><td></td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
+            <br/><br/>
+            <table class="uk-table uk-table-hover uk-table-striped">
+                <caption>Invoices <div class="uk-badge uk-badge-danger" style="margin-left:1em;">{{ g.user.invoices.all() | length }}</div></caption>
+                <thead>
+                    <tr><th>Date Paid</th><th>Amount Paid</th><th>Payment Address</th><th>Confirmed</th></tr>
+                </thead>
+                <tbody>
+                    {% if g.user.invoices.all() %}
+                    {% for invoice in g.user.invoices.all() %}
+                    <tr class="invoice-row">
+                        {% if invoice.datepaid %}
+                        <td>{{invoice.datepaid | date}}</td>
+                        {% else %}
+                        <td>Unpaid</td>
+                        {% endif %}
+                        <td>{{invoice.value_paid}}</td>
+                        <td>{{invoice.address}}</td>
+                        {% if invoice.is_confirmed %}
+                        <td><a href="{{url_for('confirm_purchase', invoice_id=invoice.id)}}"><i class="uk-icon-ok"></i></a></td>
+                        {% else %}
+                            {% if invoice.paid %}
+                            <td><a href="{{url_for('confirm_purchase', invoice_id=invoice.id)}}"><i class="uk-icon-ban-circle"></i></a></td>
+                            {% else %}
+                            <td><a href="{{url_for('confirm_purchase', invoice_id=invoice.id)}}" class="uk-button">Pay <i class="uk-icon-btc"></i></a></td>
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block postscript %}
+<script type="text/javascript">
+    $(window).load(function(){
+            $(".ticket-row").click(function(){
+                var tid = $(this).find("a").attr("href");
+                window.location = tid
+                });
+            $(".invoice-row").click(function(){
+                var invoice_id = $(this).find("a").attr("href");
+                window.location = invoice_id
+                });
+            });
+
+</script>
+{% endblock %}

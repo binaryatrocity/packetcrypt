@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% from "_macros.html" import render_field_with_label, render_field_with_label_oneline, render_field %}
+
+{% block title %}Login - packetcrypt{% endblock %}
+{% block flash %}
+{% for field in login_user_form.errors %}
+{% for error in login_user_form.errors[field] %}
+<div class="uk-alert uk-alert-danger" data-uk-alert><a href="" class="uk-alert-close uk-close"></a>{{ field }}: {{ error }}</div>
+{% endfor %}
+{% endfor %}
+{% endblock %}
+
+{% block content %}
+<div id="form-container" class="uk-width-3-5 uk-panel uk-panel-box uk-container-center">
+<form action="{{ url_for_security('login') }}" method="POST" name="login_user_form" class="uk-form">
+    {{ login_user_form.hidden_tag() }}
+    {{ render_field_with_label(login_user_form.email) }}
+    {{ render_field_with_label(login_user_form.password) }}
+    {{ render_field_with_label_oneline(login_user_form.remember) }}
+    {{ render_field(login_user_form.next) }}
+    {{ render_field(login_user_form.submit, class="uk-button uk-button-primary") }}
+</form>
+<div id="form-info" class="uk-align-right uk-text-info">
+    Log in with your Packetcrypt email and password to access your dashboard, download the VPN client, and purchase extended service!
+    If you are unable to remember your password, please use the button below to reset it.
+
+    <a href="{{url_for_security('forgot_password')}}" class="uk-button">Forgot Password?</a>
+</div>
+</div>
+{% endblock %}
+

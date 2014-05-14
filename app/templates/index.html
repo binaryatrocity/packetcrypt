@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+
+{% block title %}PacketCrypt - Secure, anonymous VPN service for humans{% endblock %}
+
+{% block content %}
+<div class="uk-grid">
+    <div class="uk-width-1-1">
+        <div class="uk-panel uk-container-center pc-market-block uk-text-center">
+            <h1>We handle the security, you browse the web.</h1>
+            <span class="uk-text-large">
+                PacketCrypt offers the the quickest way available to keep your web traffic safe.
+                We follow financial industry standards to ensure your data is protected no matter where you're grabbing a connection.
+                PacketCrypt makes it simple to encrypt your internet trafic and go about your day.
+            </span>
+            <div id="tech-images">
+                <img src={{ url_for('static', filename='img/windows.png') }} />
+                <img src={{ url_for('static', filename='img/openvpn.png') }} />
+                <img src={{ url_for('static', filename='img/android.png') }} />
+                <img src={{ url_for('static', filename='img/ios.png') }} />
+                <img src={{ url_for('static', filename='img/osx.png') }} />
+            </div>
+        </div>
+    </div>
+    <div class="uk-width-1-1">
+        <div id="three-fold-container" class="uk-container-center">
+            <div class="uk-grid" data-uk-grid-match="{target:'.uk-panel'}">
+                <div class="uk-width-large-1-3 uk-width-medium-1-1">
+                    <div class="uk-panel uk-panel-box uk-panel-box-primary">
+                        <h3 class="uk-panel-title uk-text-center"><i class="uk-icon-lock uk-icon-large"></i> Secure</h3>
+                        We don't take chances with your data or ours.
+                        All of PacketCrypt's services rely on OpenVPN, open source security software trusted by over 5 million users.
+                        Run on the safest platform in the world: FreeBSD. Our servers are stable and secured to make sure we're always there for you.
+                    </div>
+                </div>
+                <div class="uk-width-large-1-3 uk-width-medium-1-1">
+                    <div class="uk-panel uk-panel-box uk-panel-box-primary">
+                        <h3 class="uk-panel-title uk-text-center"><i class="uk-icon-download-alt uk-icon-large"></i> Fast</h3>
+                        Unlike other anonymous VPN providers, you don't have to sacrifice speed for safety with PacketCrypt.
+                        All of our servers worldwide are on a Gigabit pipeline, so you can download as fast as your local connection can handle.
+                        Stream movies or download large files fast, and without leaving a trace.
+                    </div>
+                </div>
+                <div class="uk-width-large-1-3 uk-width-medium-1-1">
+                    <div class="uk-panel uk-panel-box uk-panel-box-primary">
+                        <h3 class="uk-panel-title uk-text-center"><i class="uk-icon-group uk-icon-large"></i> Anonymous</h3>
+                        The first rule of security is <em>Trust No One</em>, and that includes us.
+                        PacketCrypt keeps no logs, and doesn't track your login sessions.
+                        You pay us in Bitcoin and all we ask for is an email address.
+                        Not only does PacketCrypt protect you from the rest of the internet, we protect you from ourselves.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="uk-width-1-1">
+        <div id="two-fold-container" class="uk-container-center">
+            <div class="uk-grid" data-uk-grid-match="{target:'.uk-panel'}">
+                <div class="uk-width-1-3">
+                    <div class="uk-panel uk-align-left uk-text-center">
+                        <h2>Sign Up Now!</h2>
+                        <ul class="uk-list uk-list-striped">
+                            <li>No personal information required</li>
+                            <li>Only <strong id="btcprice">0</strong><i class="uk-icon-btc"></i> BTC</li>
+                            <li>Supports all major platforms</li>
+                            <li>Unthrottled Gigabit connection</li>
+                            <li>1000Gb of transfer per month!</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="uk-width-2-3">
+                    <div class="uk-panel">
+                        <h2>Getting started is easy:</h2>
+                        <p> 
+                            All you need to register is an email address! Bitcoin transactions are processed instantly,
+                            and your access will be available within 10 minutes of purchase. Use our custom VPN client
+                            for an install-and-go experience or download your client key and use the tools you're
+                            familiar with! Click below to sign up for an account and let Packetcrypt secure your web traffic.
+                        </p>
+                        </span>
+                        <a href="{{url_for('purchase')}}" class="uk-button uk-button-primary uk-button-large uk-align-right">Buy Now!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

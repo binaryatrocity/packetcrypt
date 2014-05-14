@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}Purchase VPN Service Now - packetcrypt{% endblock %}
+
+{% block content %}
+<div id="form-container" class="uk-width-1-2 uk-panel uk-panel-box uk-container-center">
+    <h4>Purchase PacketCrypt VPN Service</h4>
+    <ul>
+        <li>Service in 5 different countries</li>
+        <li>4 weeks of access</li>
+        <li>Price (USD): ${{service_price}}</li>
+        {% if price %}
+        <li>Price (BTC): {{ price }}</li>
+        {% endif %}
+    </ul>
+    {% if g.user.is_authenticated() %}
+    <a href="{{url_for('confirm_purchase')}}" class="uk-button uk-button-success">Purchase</a>
+    <a href="{{url_for('dashboard')}}" class="uk-button uk-button-danger">Cancel</a>
+    {% else %}
+    <a href="{{url_for_security('login')}}" class="uk-button uk-button-primary">Login to Purchase</a>
+    <a href="{{url_for_security('register')}}" class="uk-button uk-button-success">Register an Account</a>
+    {% endif %}
+</div>
+{% endblock %}

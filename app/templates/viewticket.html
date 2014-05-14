@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}View Support Ticket - packetcrypt{% endblock %}
+
+{% block content %}
+<div id="form-container" class="uk-width-1-2 uk-panel uk-panel-box uk-container-center">
+    <h4 class="uk-panel-title">{{ ticket.subject }}</h4>
+    <hr class="uk-panel-divider"/>
+    <span class="ticket-text">{{ ticket.body }}</span>
+    <br/>
+    <span class="uk-article-meta">{{ ticket.timestamp }}</span>
+    <br/><br/>
+    <a href="{{url_for('dashboard')}}" class="uk-button uk-button-primary" type="submit">Close</a>
+    <a href="{{url_for('editticket', tid=ticket.id)}}" class="uk-button uk-button-success">Edit</a>
+    <a href="{{url_for('deleteticket', tid=ticket.id)}}" class="uk-button uk-button-danger">Delete</a>
+</div>
+{% endblock %}

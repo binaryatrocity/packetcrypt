@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% from "_macros.html" import render_field_with_label, render_field %}
+
+{% block title %}Create Support Ticket - packetcrypt{% endblock %}
+{% block flash %}
+{% for field in form.errors %}
+{% for error in form.errors[field] %}
+<div class="uk-alert uk-alert-danger" data-uk-alert><a href="" class="uk-alert-close uk-close"></a>{{ field }}: {{ error }}</div>
+{% endfor %}
+{% endfor %}
+{% endblock %}
+
+{% block content %}
+<div id="form-container" class="uk-width-1-2 uk-panel uk-panel-box uk-container-center">
+<form action="{{ url_for('newticket') }}" method="POST" name="form" class="uk-form" style="width:100%;">
+    {{ form.hidden_tag() }}
+    {{ render_field_with_label(form.subject) }}
+    {{ render_field_with_label(form.body) }}
+    <div class="uk-form-row">
+        <button class="uk-button uk-button-primary" type="Submit">Create Ticket</button>
+        <button class="uk-button uk-button-danger" type="reset">Reset</button>
+        <a class="uk-button" href="{{ url_for('dashboard') }}">Cancel</a>
+    </div>
+</form>
+</div>
+{% endblock %}
